@@ -8,6 +8,15 @@ from postgenerator import PostGenerator
 from newsscrapper import GNewsAgent
 from data_collection import TLDRNewsFetcher
 
+# ─── Security Check (Passkey via URL) ────────────────────────────────────────
+query_params = st.query_params
+user_key = query_params.get("key", None)
+required_key = st.secrets["security"]["access_key"]
+
+if user_key != required_key:
+    st.error("🔒 Access Denied: Invalid or missing key in URL.")
+    st.stop()
+
 # ─── Local Saver & News Setup ───────────────────────────────────────────────
 saver = SimpleSaver()
 news_agent = GNewsAgent()
